@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ERDiagram version="1.1">
+  <Connection session="jja1802_ssh" database="jja1802_ssh" />
+  <Drawing gridVisible="false" snapOn="false" fastRouting="false" labelsVisible="true" />
+  <Tables>
+    <Table name="guanggao">
+      <Drawing expanded="true" location="50,50" dimensions="180,131" />
+      <Columns>
+        <Column name="ggid" primary_key="true" foreign_key="false" required="true" unique="true">
+          <Data type="INT" size="10" />
+        </Column>
+        <Column name="ggtitle" primary_key="false" foreign_key="false" required="false" unique="false">
+          <Data type="VARCHAR" size="100" />
+        </Column>
+        <Column name="ggimg" primary_key="false" foreign_key="false" required="false" unique="false">
+          <Data type="VARCHAR" size="500" />
+        </Column>
+        <Column name="ggurl" primary_key="false" foreign_key="false" required="false" unique="false">
+          <Data type="VARCHAR" size="500" />
+        </Column>
+        <Column name="ggtime" primary_key="false" foreign_key="false" required="false" unique="false">
+          <Data type="INT" size="10" />
+        </Column>
+      </Columns>
+    </Table>
+    <Table name="house">
+      <Drawing expanded="true" location="350,50" dimensions="211,251" />
+      <Columns>
+        <Column name="id" primary_key="true" foreign_key="false" required="true" unique="true">
+          <Data type="INT" size="10" />
+        </Column>
+        <Column name="user_id" primary_key="false" foreign_key="true" required="false" unique="false">
+          <Data type="INT" size="10" />
+        </Column>
+        <Column name="type_id" primary_key="false" foreign_key="true" required="false" unique="false">
+          <Data type="INT" size="10" />
+        </Column>
+        <Column name="title" primary_key="false" foreign_key="false" required="false" unique="false">
+          <Data type="VARCHAR" size="50" />
+        </Column>
+        <Column name="description" primary_key="false" foreign_key="false" required="false" unique="false">
+          <Data type="VARCHAR" size="2000" />
+        </Column>
+        <Column name="price" primary_key="false" foreign_key="false" required="false" unique="false">
+          <Data type="INT" size="10" />
+        </Column>
+        <Column name="pubdate" primary_key="false" foreign_key="false" required="false" unique="false">
+          <Data type="DATE" />
+        </Column>
+        <Column name="floorage" primary_key="false" foreign_key="false" required="false" unique="false">
+          <Data type="INT" size="10" />
+        </Column>
+        <Column name="contact" primary_key="false" foreign_key="false" required="false" unique="false">
+          <Data type="VARCHAR" size="100" />
+        </Column>
+        <Column name="street_id" primary_key="false" foreign_key="true" required="false" unique="false">
+          <Data type="INT" size="10" />
+        </Column>
+        <Column name="flag" primary_key="false" foreign_key="false" required="false" unique="false">
+          <Data type="VARCHAR" size="255" />
+        </Column>
+      </Columns>
+    </Table>
+    <Table name="person">
+      <Drawing expanded="true" location="650,50" dimensions="212,71" />
+      <Columns>
+        <Column name="personid" primary_key="true" foreign_key="false" required="true" unique="true">
+          <Data type="VARCHAR" size="200" />
+        </Column>
+        <Column name="personname" primary_key="false" foreign_key="false" required="false" unique="false">
+          <Data type="VARCHAR" size="500" />
+        </Column>
+      </Columns>
+    </Table>
+    <Table name="streetnumber">
+      <Drawing expanded="true" location="1002,49" dimensions="187,91" />
+      <Columns>
+        <Column name="id" primary_key="true" foreign_key="false" required="true" unique="true">
+          <Data type="INT" size="10" />
+        </Column>
+        <Column name="name" primary_key="false" foreign_key="false" required="false" unique="false">
+          <Data type="VARCHAR" size="50" />
+        </Column>
+        <Column name="district_id" primary_key="false" foreign_key="true" required="false" unique="false">
+          <Data type="INT" size="10" />
+        </Column>
+      </Columns>
+    </Table>
+    <Table name="type">
+      <Drawing expanded="true" location="50,250" dimensions="159,71" />
+      <Columns>
+        <Column name="id" primary_key="true" foreign_key="false" required="true" unique="true">
+          <Data type="INT" size="10" />
+        </Column>
+        <Column name="type" primary_key="false" foreign_key="false" required="true" unique="false">
+          <Data type="VARCHAR" size="10" />
+        </Column>
+      </Columns>
+    </Table>
+    <Table name="userinfo">
+      <Drawing expanded="true" location="696,462" dimensions="201,151" />
+      <Columns>
+        <Column name="userid" primary_key="true" foreign_key="false" required="true" unique="true">
+          <Data type="INT" size="10" />
+        </Column>
+        <Column name="username" primary_key="false" foreign_key="false" required="false" unique="false">
+          <Data type="VARCHAR" size="200" />
+        </Column>
+        <Column name="userpass" primary_key="false" foreign_key="false" required="false" unique="false">
+          <Data type="VARCHAR" size="200" />
+        </Column>
+        <Column name="userfamily" primary_key="false" foreign_key="false" required="false" unique="false">
+          <Data type="VARCHAR" size="300" />
+        </Column>
+        <Column name="userphone" primary_key="false" foreign_key="false" required="false" unique="false">
+          <Data type="VARCHAR" size="13" />
+        </Column>
+        <Column name="usermail" primary_key="false" foreign_key="false" required="false" unique="false">
+          <Data type="VARCHAR" size="100" />
+        </Column>
+      </Columns>
+    </Table>
+    <Table name="xiaoqu">
+      <Drawing expanded="true" location="1146,294" dimensions="166,71" />
+      <Columns>
+        <Column name="id" primary_key="true" foreign_key="false" required="true" unique="true">
+          <Data type="INT" size="10" />
+        </Column>
+        <Column name="name" primary_key="false" foreign_key="false" required="true" unique="false">
+          <Data type="VARCHAR" size="50" />
+        </Column>
+      </Columns>
+    </Table>
+    <Table name="yaohaoconfig">
+      <Drawing expanded="true" location="50,450" dimensions="218,51" />
+      <Columns>
+        <Column name="yaohaoconfig" primary_key="false" foreign_key="false" required="false" unique="false">
+          <Data type="VARCHAR" size="255" />
+        </Column>
+      </Columns>
+    </Table>
+    <Table name="yaohaohouse">
+      <Drawing expanded="true" location="350,450" dimensions="217,51" />
+      <Columns>
+        <Column name="yaohaohouse" primary_key="false" foreign_key="false" required="false" unique="false">
+          <Data type="VARCHAR" size="255" />
+        </Column>
+      </Columns>
+    </Table>
+    <Table name="yaohaozhuhu">
+      <Drawing expanded="true" location="950,450" dimensions="175,71" />
+      <Columns>
+        <Column name="yaohaoid" primary_key="true" foreign_key="false" required="true" unique="true">
+          <Data type="INT" size="10" />
+        </Column>
+        <Column name="yaohaouserid" primary_key="false" foreign_key="false" required="false" unique="false">
+          <Data type="INT" size="10" />
+        </Column>
+      </Columns>
+    </Table>
+  </Tables>
+  <Relationships>
+    <Relationship name="FK35771pxdrce8p2bt8oys80qmg">
+      <Details primary_table="userinfo" foreign_table="house">
+        <PrimaryKeys>
+          <ColumnName name="userid" />
+        </PrimaryKeys>
+        <ForeignKeys>
+          <ColumnName name="user_id" />
+        </ForeignKeys>
+      </Details>
+      <Drawing routingType="0" />
+    </Relationship>
+    <Relationship name="FK3u8wwj7kr9l3ca517nm23rxw6">
+      <Details primary_table="type" foreign_table="house">
+        <PrimaryKeys>
+          <ColumnName name="id" />
+        </PrimaryKeys>
+        <ForeignKeys>
+          <ColumnName name="type_id" />
+        </ForeignKeys>
+      </Details>
+      <Drawing routingType="0" />
+    </Relationship>
+    <Relationship name="FKejb0f1e386loliqe2dc889lmr">
+      <Details primary_table="streetnumber" foreign_table="house">
+        <PrimaryKeys>
+          <ColumnName name="id" />
+        </PrimaryKeys>
+        <ForeignKeys>
+          <ColumnName name="street_id" />
+        </ForeignKeys>
+      </Details>
+      <Drawing routingType="0" />
+    </Relationship>
+    <Relationship name="FKdhg7abq5xa8pa3t1t7el0uuxm">
+      <Details primary_table="xiaoqu" foreign_table="streetnumber">
+        <PrimaryKeys>
+          <ColumnName name="id" />
+        </PrimaryKeys>
+        <ForeignKeys>
+          <ColumnName name="district_id" />
+        </ForeignKeys>
+      </Details>
+      <Drawing routingType="0" />
+    </Relationship>
+  </Relationships>
+</ERDiagram>
+

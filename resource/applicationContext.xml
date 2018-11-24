@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="  
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+
+
+<!--1 dataSource (连接池) 2 sessionFactory 3 AOP事务  4 自动加载构建bean  5 dao持久层 (@Repository) 6 业务层 @Service  7控制层代码 @Contorller 8 页面    -->
+<!--  大数据（DB）:  分库：  用户数， 压力分解，峰值     评论：产品主库-评论分库-->
+<!--               分表：  News(年份-类型)  DB：news-2018-nba   -->
+<!--     -->
+
+
+	<!-- 自动加载构建bean -->
+	<context:component-scan base-package="com.ssh.house" />
+	<!-- 
+	  用途1：Spring的xml配置文件中，可以通过${属性名}使用properties文件配置的值
+	  用途2：可以使用@Value("${属性名}")注解读取properties文件配置的值，再给字段赋值
+	         方法1：注解在字段上，给字段赋值
+	         方法2：注解在字段的setter方法中赋值           
+
+<context:property-placeholder location="classpath:db.properties"/>
+-->
+	<!-- 01 数据源  DBCP  C3PO  阿里连接（德鲁依）druid-->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver">
+		</property>
+		<property name="url" value="jdbc:mysql://127.0.0.1:3306/jja1802_ssh?serverTimezone=UTC&amp;useUnicode=true&amp;characterEncoding=utf-8">
+		</property>
+		<property name="username" value="root"></property>
+		<property name="password" value="123123"></property>
+	</bean>
+
+
+	<!-- 加载数据库属性配置文件 -->
+	<!-- <context:property-placeholder location="classpath:db.properties" /> -->
+	<!-- 数据库连接池c3p0配置 -->
+
+	<!--<bean id="dataSource-c3po" class="com.mchange.v2.c3p0.ComboPooledDataSource" 
+		destroy-method="close"> <property name="jdbcUrl" value="${db.url}"></property> 
+		<property name="driverClass" value="${db.driverClassName}"></property> <property 
+		name="user" value="${db.username}"></property> <property name="password" 
+		value="${db.password}"></property> <property name="maxPoolSize" value="40"></property> 
+		<property name="minPoolSize" value="1"></property> <property name="initialPoolSize" 
+		value="1"></property> <property name="maxIdleTime" value="20"></property> 
+		</bean> -->
+
+
+
+	<!-- <context:property-placeholder location="classpath:db.properties" /> -->
+
+	<!-- 阿里 druid 数据库连接池 -->
+	<bean id="dataSource_druid" class="com.alibaba.druid.pool.DruidDataSource"
+		destroy-method="close">
+		<!-- 数据库基本信息配置 -->
+		<property name="url" value="jdbc:mysql://192.168.31.55:3306/jja1802_ssh" />
+		<property name="username" value="root" />
+		<property name="password" value="123123" />
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="filters" value="stat" />
+		<!-- 最大并发连接数 -->
+		<property name="maxActive" value="2000" />
+		<!-- 初始化连接数量 -->
+		<property name="initialSize" value="20" />
+		<!-- 配置获取连接等待超时的时间 -->
+		<property name="maxWait" value="3000" />
+		<!-- 最小空闲连接数 -->
+		<property name="minIdle" value="20" />
+		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="60000" />
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="300000" />
+		<property name="validationQuery" value="SELECT 'x'" />
+		<property name="testWhileIdle" value="true" />
+		<property name="testOnBorrow" value="false" />
+		<property name="testOnReturn" value="false" />
+		<property name="maxOpenPreparedStatements" value="20" />
+		<!-- 打开 removeAbandoned 功能 -->
+		<property name="removeAbandoned" value="true" />
+		<!-- 1800 秒，也就是 30 分钟 -->
+		<property name="removeAbandonedTimeout" value="1800" />
+		<!-- 关闭 abanded 连接时输出错误日志 -->
+		<property name="logAbandoned" value="true" />
+	</bean>
+
+
+	<!--02  sessionFactory  -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+
+		<property name="dataSource" ref="dataSource" />
+
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.show_sql">true</prop>         <!-- 显示Hibernate持久化操作所生成的SQL -->
+				<prop key="hibernate.format_sql">false</prop>   <!-- 将SQL脚本进行格式化后再输出 -->
+				
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>   <!-- 指定数据库方言 -->
+				<!-- <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop> -->  <!-- 指定数据库方言 -->
+				<prop key="hibernate.temp.use_jdbc_metadata_defaults">false</prop><!-- 排除掉数据库可能不支持的功能 -->
+			</props>
+		</property>
+
+		<property name="configLocation" value="classpath:hibernate.cfg.xml">
+		</property>
+
+		<!--使用注解 -->
+
+		<!-- <property name="packagesToScan"> <list> <value>com.tzhu.ssh.domain</value> 
+			</list> </property> -->
+
+		<!--使用配置文件 -->
+		<property name="mappingLocations">
+			<list>
+				<value>classpath*:com/ssh/house/entity/*.hbm.xml</value>
+
+			</list>
+
+		</property>
+
+
+		<!-- <property name="mappingResources"> <list> <value>com/ssh/house/entity/Type.hbm.xml</value> 
+			<value>com/ssh/house/entity/Person.hbm.xml</value> <value>com/ssh/house/entity/Guanggao.hbm.xml</value> 
+			<value>com/ssh/house/entity/House.hbm.xml</value> <value>com/ssh/house/entity/Streetnumber.hbm.xml</value> 
+			<value>com/ssh/house/entity/Xiaoqu.hbm.xml</value> <value>com/ssh/house/entity/Userinfo.hbm.xml</value> 
+			<value>com/ssh/house/entity/TyPreferentialApply.hbm.xml</value> <value>com/ssh/house/entity/TyCustomerPromise.hbm.xml</value> 
+			<value>com/ssh/house/entity/TySellPlan.hbm.xml</value> <value>com/ssh/house/entity/TyReportForms.hbm.xml</value> 
+			<value>com/ssh/house/entity/TyCustomerWish.hbm.xml</value> </list> </property> -->
+
+	</bean>
+
+
+	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate5.HibernateTemplate">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+
+
+	<!-- 配置事务管理器 -->
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<!-- 配置事务通知属性 -->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<!-- 定义事务传播属性 -->
+		<tx:attributes>
+			<tx:method name="insert*" propagation="REQUIRED" />
+			<tx:method name="update*" propagation="REQUIRED" />
+			<tx:method name="edit*" propagation="REQUIRED" />
+			<tx:method name="save*" propagation="REQUIRED" />
+			<tx:method name="add*" propagation="REQUIRED" />
+			<tx:method name="new*" propagation="REQUIRED" />
+			<tx:method name="set*" propagation="REQUIRED" />
+			<tx:method name="remove*" propagation="REQUIRED" />
+			<tx:method name="delete*" propagation="REQUIRED" />
+			<tx:method name="change*" propagation="REQUIRED" />
+
+			<!-- hibernate4必须配置为开启事务 否则 getCurrentSession()获取不到 -->
+			<tx:method name="get*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="count*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="find*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="list*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="is*" propagation="REQUIRED" read-only="true" />
+
+		</tx:attributes>
+	</tx:advice>
+
+	<!-- 配置事务切面 com.item.biz.impl -->
+	<aop:config proxy-target-class="true">
+		<aop:pointcut id="serviceOperation"
+			expression="(execution(* com.ssh.house.biz.impl..*.*(..))) or (execution(* com.ssh.house.appcomm.base..*.*(..)))" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="serviceOperation" />
+	</aop:config>
+
+
+
+
+
+</beans>
+	

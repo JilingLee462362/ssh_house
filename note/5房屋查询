@@ -1,0 +1,10 @@
+
+
+   房屋 分页查询
+   
+   1  dao     继承  baseDao    
+   2   biz 业务层     baseBiz
+   3  junit4测试
+   
+   4  action控制层   
+   

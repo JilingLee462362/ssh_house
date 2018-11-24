@@ -1,0 +1,251 @@
+-- 楼盘表(小区)
+create table ty_premises( 
+       premisesidint(10) primary key,    -- 编号
+       premisesname varchar(50) unique,     -- 名称
+       position varchar(50),                -- 地理位置     -- 所属区域
+       all_areaint(10,2),                -- 占地面积
+       build_areaint(10,2),              -- 建筑面积
+       road_areaint(10,2),               -- 道路广场占地面积
+       green_areaint(10,2),              -- 绿化面积
+       open_date date ,                      -- 开发日期
+       floor_countint(100),              -- 单元数量    -- -- -- -- -- -- -- -- -- -- -- -- -- -- 楼房数量
+       parking_spaceint(10),             -- 车位数
+       descriptions varchar(100),           -- 楼盘备注
+       photo  varchar(32),                  -- 楼盘图片
+       status varchar(32)                   -- 楼盘状态
+);
+-- 楼房表
+create table ty_buld(
+					     -- 楼房编号
+					     -- 楼房名称   -- -- -- -- -- -- -东亚大厦A座
+					     -- 所属楼盘
+					     -- 楼房层数    -- -- -- -- -22层
+					     -- 房屋数量
+					     -- 所含单元数量
+					     -- 楼房类型      -- 商用  住宅  其他
+					     -- 楼房朝向
+					     -- 楼房高度       300米
+					     -- 建成日期    
+                                             -- 楼房状态   已售   在售 待售
+					     -- 备注       -- -- -- -- -- 
+);                                            
+-- 单元表
+create table ty_apartment(
+       apartidint(10) primary key,                                                    -- 单元编号
+       premisesidint(10), foreign key(premisesid) references ty_premises(premisesid), -- 所属楼盘  -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 1
+       apartname varchar(32),                                                            -- 单元名称
+       house_countint(100)`                                                           -- 房屋数量
+											  -- 所属楼层  -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -2
+);
+-- 房屋表
+create table ty_house(
+       houseidint(10) primary key,                                                    -- 房屋编号  
+       premisesidint(10), foreign key(premisesid) references ty_premises(premisesid), -- 所属楼盘
+       apartidint(10), foreign key(apartid) references ty_apartment(apartid),         -- 所属单元
+       house_numberint(8) ,                                                           -- 门牌号    
+       house_type varchar(32)                                                            -- 户型    -- -- -- -- - 三室一厅... ...
+											  -- 状态    -- -- -- -- -已售 未售 在售
+											  -- 用途    -- -- -- -- -- -商铺 居住
+											  -- 初价    -- -- -- -- -- -房屋底价 
+											  -- 房屋面积    -- -- -- -- -- -- 房屋面积
+											  -- 阳台面积    -- -- -- -- -- 
+											  -- 所属楼房     -- -- -- -- -- 
+											  -- 所属楼层    -- -- -- -- -- -- -- 
+											  -- 房高        -- -- -- -- -- -- -- 3米
+											  -- 装修状况    -- -- -- -- -- -- 毛坯  简装修  精装修
+											  -- 建成日期
+											  -- 图片       -- -- -- -- -- -- -房屋拍照
+											  -- 房屋朝向      -- -- -- -- -- -房屋朝向
+											  -- 楼房结构      -- 普通  折梯
+											  -- 公用分摊建筑面积
+											  -- 备注
+);
+-- 前台客户信息表
+create table ty_customer_befor(
+       cusidint(10) primary key,                                                      -- 客户编号
+       cusname varchar(32),                                                              -- 客户昵称
+       cuspwd varchar(32),                                                               -- 客户密码
+       teltphono varchar(32),                                                            -- 电话
+       address varchar(32),                                                              -- 地址
+       email varchar(32)                                                                 -- 邮箱
+											  -- 注册时间    
+);
+
+-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+
+
+-- 后台客户信息表
+create table ty_customer_back(
+       cusidint(10) primary key,                                                      -- 客户编号
+       cusname varchar(32),                                                              -- 客户姓名称    
+       cuspwd varchar(32),                                                               -- 客户密码   
+       cus_card varchar(18),                                                             -- 客户身份证号
+       teltphono varchar(32),                                                            -- 联系电话
+       address varchar(32),                                                              -- 地址
+       email varchar(32),                                                                -- 邮箱
+       desire varchar(32),                                                               -- 顾客意向    
+       savedate date                                                                      -- 存档时间
+);
+
+-- 部门表
+create table ty_department(
+       departidint(10)primary key,                                                    -- 部门编号
+       departname varchar(32),                                                           -- 部门名称
+										          -- 部门经理    
+);
+-- 职位表
+create table ty_position(
+       positionidint(10)primary key,                                                    -- 职位编号
+       positionname varchar(32),                                                           -- 职位名称
+);
+-- 员工表
+create table ty_employee(
+       employeeidint(10)primary key,                                                    -- 员工编号
+       employeename varchar(32),                                                           -- 员工姓名
+       positionidint(10),foreign key(positionid) references ty_position(positionid),    -- 员工职位
+       departidint(10),foreign key(departid) references ty_department(departid),        -- 员工所属部门
+       sex varchar(2),                                                                     -- 性别
+       ageint(2),                                                                       -- 年龄
+       emp_identity varchar(32),                                                           -- 身份证号
+       birth date,                                                                          -- 出生日期
+       phoneint(11)                                                                     -- 联系电话
+											    -- 入职日期   -- -- -- -- -- -- -- -- 
+);
+
+-- 客户意向表
+create table ty_customer_wish(
+       cw_idint(10) primary key,
+       cw_name varchar(32),                                                                -- 客户姓名
+       cw_sex varchar(4),                                                                  -- 性别
+       cw_phoneint(11),                                                                 -- 联系电话
+       cw_date date, 		                                                            -- 来访时间
+       cw_countint(10),                                                                 -- 来访次数
+       cw_area varchar(32),                                                                -- 来访区域
+       cw_will varchar(32),                                                                -- 客户意向
+       cw_use varchar(32),                                                                 -- 房源用途
+       cw_considerate varchar(100),                                                        -- 考虑因素
+       cw_expectation varchar(32),                                                         -- 购房渴望度
+       cw_description varchar(100)                                                         -- 备注
+);
+-- 优惠申请表
+create table ty_preferential_apply(
+       pa_applyidint(10) primary key,
+       pa_customer_idint(10),foreign key(pa_customer_id)references ty_customer_back(cusid),        -- 客户编号
+       pa_name varchar(32),                                                                            -- 申请书名称
+       pa_employeeidint(10),foreign key(pa_employeeid) references ty_employee(employeeid),         -- 代理申请人工号
+       -- 待审批人工号
+       pa_houseidint(10),foreign key(pa_houseid) references ty_house(houseid),            -- 房屋编号
+       pa_before_priceint(10),                                                            -- 原价
+       pa_nowint(10,2),                                                                   -- 现在优惠点数
+       pa_applyint(10,2),                                                                 -- 申请优惠点数
+       pa_after_priceint(10),                                                             -- 优惠后的价格
+       pa_date date,                                                                          -- 申请日期
+       pa_status varchar(4),                                                                 -- 状态（未审批，待审批，审批通过）
+       pa_content varchar(100),                                                              -- 申请事由
+       pa_opinion varchar(100)                                                               -- 审核意见
+											      -- 待审批人工号    -- -- -- -- 由谁来批准
+       
+);
+--  分期付款申请
+create table ty_instalment_apply(
+       ia_idint(10) primary key,                                                                   -- 付款申请编号
+       ia_customer_idint(10),foreign key(ia_customer_id)references ty_customer_back(cusid),        -- 客户编号          
+                                                                                                      -- 申请代理人编号  -- -- -- -- 谁代替客户做的申请
+                                                                                                      -- 待审批人工号    -- -- -- -- 由谁来批准
+       ia_name varchar(32),                                                                -- 付款申请书名称
+       ia_date date,                                                                        -- 付款申请日期
+       ia_content varchar(100),                                                            -- 付款申请事由
+       ia_mind varchar(100),                                                               -- 审核意见
+       ia_status varchar(10)                                                                -- 付款申请单状态       --  未提交0   已提交1 
+											    -- 房屋编号             -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+											    -- 审批状态             未审批0 审批通过1  审批未通过2
+);
+-- 客户签约表
+create table ty_customer_promise(
+       cp_idint(10) primry key,                                                         -- 客户签约表编号
+       cp_customer_idint(10),foreign key(cp_customer_id)references ty_customer_back(cusid),        -- 客户编号
+       cp_houseidint(10),foreign key(cp_houseid) references ty_house(houseid),          -- 房屋编号
+       -- 接待员编号
+       cp_whether varchar(4),                                                              -- 是否已经缴纳金额
+       cp_already_promise varchar(32),                                                     -- 已经签署合同
+       cp_date date,                                                                        -- 下次到访日期
+       cp_priceint(10),                                                                 -- 洽谈价格
+       cp_status varchar(10),                                                               -- 状态
+       cp_procedure varchar(100)                                                            -- 需要准备的手续
+);
+-- 销售计划表
+create table ty_sell_plan(
+       sp_idint(10) primary key ,                                                       -- 计划编号
+       sp_name varchar(32),                                                                -- 计划名称
+       sp_begin date,	                                                                     -- 计划实施日期
+       sp_end date,                                                                         -- 计划截止日期
+       sp_soldint(50),                                                                  -- 已卖出房屋数
+       sp_planint(100),                                                                 -- 计划出售数
+       sp_departidint(10),foreign key(sp_departid) references ty_department(departid),  -- 作用部门
+       sp_detail varchar(100)                                                               -- 计划实施细则
+);
+-- 合同签署记录表
+create table ty_pact_note(
+       pn_idint(10) primary key,                                                        -- 记录表编号
+       pn_customer_idint(10),foreign key(pn_customer_id) references ty_customer_back(cusid),       -- 合同签署客户编号
+       pn_name varchar(32),                                                                -- 合同名称
+       pn_deputy varchar(32),                                                              -- 公司代表
+       pn_date date,                                                                        -- 签署日期
+       pn_description varchar(100)                                                         -- 详细描述
+);
+-- 交易记录
+create table ty_deal_note(
+       dn_idint(10) primary key,                                                        -- 交易房屋编号
+       dn_customer_idint(10),foreign key(dn_customer_id)references ty_customer_back(cusid), -- 交易客户编号
+       employeeidint(10),foreign key(employeeid) references ty_employee(employeeid),    -- 销售员工编号
+   --   plan_peopleint(10),                                                                -- 记录人编号
+       dn_date date,                                                                        -- 成交日期
+       dn_begin_priceint(10,2),                                                         -- 房屋初定价
+       dn_end_priceint(10,2),                                                           -- 实际成交价
+       applyidint(10),foreign key(applyid) references ty_preferential_apply(pa_applyid),   -- 享受申请编号
+       dn_description varchar(100)                                                         -- 备注
+);
+-- 财务业绩表
+create table ty_report_forms(
+       rf_idint(10) primary key,                                                        -- 报表编号
+       rf_name varchar(32),                                                                -- 报表名称
+       employeeidint(10),foreign key(employeeid) references ty_employee(employeeid),    -- 制作人工号
+       rf_creatdate date,                                                                   -- 表创建日期
+       rf_factint(50),                                                                  -- 实际成交数量
+       rf_planint(50),                                                                  -- 计划成交数量
+       rf_countint(100),                                                                -- 成交总金额
+       rf_averageint(10,2)  ,                                                           -- 成交平均价格
+   --     plan_peopleint(10),                                                              -- 计划制定人编号
+       rf_begin date,                                                                       -- 起始日期
+       rf_end date,                                                                         -- 截止日期
+       rf_description varchar(100)                                                         -- 详细描述
+);
+
+
+-- 燕清
+
+-- 新闻表
+create table ty_news(
+       news_idint(10) primary key,                                                       -- 新闻编号
+       news_title varchar(32),                                                              -- 新闻标题
+       news_content varchar(100),                                                            -- 新闻内容
+       news_promulgator varchar(32)                                                         -- 发布人
+);
+-- 公告表
+create table ty_offiche(
+       off_idint(10) primary key,                                                        -- 公告编号
+       off_title varchar(32),                                                               -- 公告标题
+       off_content varchar(100),                                                            -- 公告内容
+       off_employeeidint(10),foreign key(off_employeeid) references ty_employee(employeeid),-- 发布人
+);
+-- 论坛标题表
+create table ty_forum_title(
+       ft_idint(10) primary key,                                                         -- 论坛标题编号
+       ft_title varchar(32)                                                                 -- 论坛标题
+);
+-- 论坛内容表
+create table ty_forum(
+       forum_idint(10) primary key,                                                      -- 论坛内容编号
+       ft_idint(10),foreign key(ft_id) references ty_forum_title(ft_id),                 -- 论坛标题编号
+       forum_content varchar(100)                                                         	 -- 论坛内容
+);

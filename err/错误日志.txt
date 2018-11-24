@@ -1,0 +1,59 @@
+Hibernate4中使用getCurrentSession报Could not obtain transaction-synchronized Session for current
+
+hibernate.cfg.xml
+<property name="current_session_context_class">thread</property>
+
+-----------------------------------------------------------------------------------------
+
+
+org.springframework.beans.factory.BeanCreationException: 
+Error creating bean with name 'sessionFactory' defined in class path resource [applicationContext.xml]: Invocation of init method failed; nested exception is org.hibernate.HibernateException: Error applying BeanValidation relational constraints
+
+
+在hibernate.hbm.xml中加上
+<property name="javax.persistence.validation.mode">none</property>
+
+
+javax.persistence.validation.mode默认情况下是auto的，就是说如果不设置的话它是会自动去你的classpath下面找一个bean-validation**包，但是找不到，所以beanvalitionFactory错
+
+-------------------------------
+
+org.hibernate.HibernateException: createQuery is not valid without active transaction
+	
+
+处理
+hibernate.cfg.xml
+去除了
+	<!-- <property name="hibernate.current_session_context_class">thread</property> -->
+ 
+
+----------------------------------------
+
+org.hibernate.HibernateException: No Session found for current thread
+
+事务配置：
+
+spring 中的aop配置
+
+-----------------------------------------
+java.lang.NoSuchMethodError: antlr.collections.AST.getLine() 
+
+错误原因（和网上说的一样）：Struts的 antlr-2.7.2.jar 与 hibernate 里面的anltr-2.7.6.jar冲突
+
+
+处理： 删除包Struts的 antlr-2.7.2.jar
+
+-----------------------------------------
+Uncaught TypeError: Cannot read property 'length' of null
+
+错误原因：dataType属性设置为json，success方法中使用了$.parseJSON方法对json数据转换数据。
+
+解决方法：ajax获得后台返回数据时，如果dataType属性已经设置为“json”，那success方法中就不需要使用
+$.parseJSON方法或者eval方法对返回的数据进行转换，可以直接使用或者遍历。
+------------------------------------------
+错误：前端页面发送请求给注解action，也进入不到action中，但控制台及前端页面也没有任何报错提示。
+
+原因：action路径错误：<form action="/emr/submit.action" method="post">其中action="/emr/submit.action"最前面多了一个"/"
+
+处理：将form改为<form action="emr/submit.action" method="post">即可
+

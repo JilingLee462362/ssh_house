@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+
+
+
+	<constant name="struts.action.extension" value="action,do" />
+	<constant name="struts.i18n.encoding" value="UTF-8" />
+	<constant name="struts.devMode" value="false" /><!--开发模式下使用，这样可以打印出更详细的错误信息 -->
+<!-- 	<constant name="struts.enable.DynamicMethodInvocation" value="true" /> -->
+
+
+<package name="ssh" extends="struts-default" namespace="/">
+
+<!-- <action name="ui*" class="com.ssh.house.web.UserinfoAction" method="${1}">
+
+<result name="index" type="dispatcher">/index.jsp</result>
+
+</action> -->
+
+</package>
+
+
+</struts>    
